@@ -7,6 +7,7 @@ var ballSpeedX = 5;
 var ballY = 20;
 var ballSpeedY = 5;
 var count2 = Number(document.getElementById("count2").innerHTML);
+var button = document.getElementById("button");
 
 function mousePosition(evt) { // tracking the mouse movement event
   var rect = canvas.getBoundingClientRect(); // gets the boundaries of the canvas
@@ -45,10 +46,11 @@ function moveEverything() {
     ballSpeedX = -ballSpeedX;
   }
   if(ballX <= 0) {
-    ballX = canvas.width/2-5
-    ballSpeedX = -ballSpeedX;
     count2 += 1;
-
+    ballX = canvas.width/2;
+    ballY = canvas.height/2;
+    ballSpeedX = ballSpeedY = 0;
+    setTimeout(function() {ballSpeedX = ballSpeedY = 5;}, 1000);
     }
   if (ballY >= canvas.height | ballY <= 0){
     ballSpeedY = -ballSpeedY;
@@ -59,6 +61,7 @@ function drawEverything() {
   canvasContext.clearRect(0,0,canvas.width, canvas.height);
   canvasContext.fillStyle = "white"; // colour for paddles
   canvasContext.fillRect(20, paddle1y, 20, 100); // Paddle 1 parameters
+  // canvasContext.fillRect(20, ballY-50, 20, 100); // comp vs. comp
   canvasContext.fillRect(canvas.width-40, ballY-50, 20, 100); // Paddle 2 parameters
 
   // drawing the ball
@@ -83,7 +86,8 @@ function drawEverything() {
 
 // Ball Collision Logic
 function ballCollision() {
-  if ((ballX == 40) && (ballY >= paddle1y && ballY <= paddle1y+100)) { // If the y-component of the ball's direction
-    ballSpeedX = -ballSpeedX;                                          // coincides with the paddles y-pos, ball will change directions
+  if ((ballX == 40) && (ballY >= paddle1y-50 && ballY <= paddle1y+100)) { // If the y-component of the ball's direction
+  // if (ballX == 40) { // comp vs. comp
+    ballSpeedX = -Math.round(1.15*ballSpeedX);                             // coincides with the paddles y-pos, ball will change directions
   }
 }
